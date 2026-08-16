@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Absensi Training</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #f2f3f5;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 450px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+    }
+
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    select {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 12px;
+      background: black;
+      transform: scaleX(-1);
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+    }
+
+    #cameraButton {
+      background: #333;
+    }
+
+    #clockInButton {
+      background: #168a4a;
+    }
+
+    #clockOutButton {
+      background: #2864dc;
+    }
+
+    #status {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>ABSENSI TRAINING</h1>
+
+  <h2>HOTEL KENARI</h2>
+
+  <select id="student">
+    <option value="">Pilih Nama Siswa</option>
+  </select>
+
+  <video id="video" autoplay playsinline></video>
+
+  <canvas id="canvas" style="display:none;"></canvas>
+
+  <button id="cameraButton">
+    📸 AKTIFKAN KAMERA
+  </button>
+
+  <button id="clockInButton">
+    🟢 CLOCK IN
+  </button>
+
+  <button id="clockOutButton">
+    🔵 CLOCK OUT
+  </button>
+
+  <div id="status">
+    Kamera belum aktif.
+  </div>
+
+</div>
+
+
+<script>
+
+let stream = null;
+
+
+// ==============================
+// AKTIFKAN KAMERA
+// ==============================
+
+async function startCamera() {
+
+  try {
+
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia) {
+
+      throw new Error(
+        "Browser tidak mendukung akses kamera."
+      );
+
+    }
+
+    stream =
+      await navigator.mediaDevices.getUserMedia({
+
+        video: {
+          facingMode: "user"
+        },
+
+        audio: false
+
+      });
+
+    document.getElementById("video").srcObject = stream;
+
+    document.getElementById("status").innerText =
+      "✅ Kamera aktif.";
+
+  } catch (error) {
+
+    console.error(error);
+
+    document.getElementById("status").innerText =
+      "❌ Kamera tidak dapat digunakan: " +
+      error.message;
+
+  }
+
+}
+
+
+document
+  .getElementById("cameraButton")
+  .addEventListener(
+    "click",
+    startCamera
+  );
+
+</script>
+
+</body>
+</html>
