@@ -174,3 +174,67 @@ document
 
 </body>
 </html>
+
+// ==============================
+// URL APPS SCRIPT
+// ==============================
+
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbyiBOR6zZzG4K87SZj-bu2pMAfFTyPUqJcXQ4zfmt-C0-84YnlZuJHDiqv4UxIN5Ehn/exec";
+
+
+// ==============================
+// LOAD DATA SISWA
+// ==============================
+
+function loadStudents() {
+
+  const script =
+    document.createElement("script");
+
+  const callbackName =
+    "studentsCallback";
+
+  window[callbackName] =
+    function(students) {
+
+      const select =
+        document.getElementById("student");
+
+      select.innerHTML =
+        '<option value="">Pilih Nama Siswa</option>';
+
+      students.forEach(function(student) {
+
+        const option =
+          document.createElement("option");
+
+        option.value =
+          student.id;
+
+        option.textContent =
+          student.name;
+
+        select.appendChild(option);
+
+      });
+
+      delete window[callbackName];
+
+      document.body.removeChild(script);
+
+    };
+
+
+  script.src =
+    API_URL +
+    "?action=students&callback=" +
+    callbackName;
+
+  document.body.appendChild(script);
+
+}
+
+
+// Jalankan saat halaman dibuka
+loadStudents();
